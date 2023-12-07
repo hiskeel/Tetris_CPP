@@ -1,1 +1,5 @@
-﻿  Tetris.vcxproj -> D:\IT Step\Tetris\Tetris\x64\Debug\Tetris.exe
+﻿  Matrix.cpp
+D:\IT Step\Tetris\Tetris\Tetris\Matrix.cpp(15,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\IT Step\Tetris\Tetris\Tetris\Matrix.cpp(268,52): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\IT Step\Tetris\Tetris\Tetris\Matrix.cpp(269,52): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Tetris.vcxproj -> D:\IT Step\Tetris\Tetris\x64\Debug\Tetris.exe

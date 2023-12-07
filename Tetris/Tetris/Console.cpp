@@ -1,4 +1,5 @@
 #include"Console.h"
+
 void Game::Gotoxy(int x, int y) {
 	COORD coord;
 	coord.X = x;
@@ -181,6 +182,7 @@ void Game::GameStart() {
 	string nick;
 	string pass;
 	Matrix matrix;
+	Shape shape;
 	bool exitGame = false;
 	bool back = false;
 	LoadUsersFromFile();
@@ -197,8 +199,7 @@ void Game::GameStart() {
 					case 1:
 						system("cls");
 						
-						matrix.ShowBoard();
-						matrix.DrawShape(matrix.InitShape());
+						matrix.Play();
 
 						system("pause");
 						break;
