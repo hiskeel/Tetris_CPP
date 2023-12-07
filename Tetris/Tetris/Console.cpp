@@ -1,5 +1,10 @@
 #include"Console.h"
-
+void Game::Gotoxy(int x, int y) {
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 bool Game::CheckGiftCode(string userCode) {
 	bool check = false;
 	for (auto i : giftCodes) {
@@ -48,8 +53,8 @@ bool Game::LoginMenu(string nick, string pass) {
 						}
 						else {
 							cout << "Wrong password. \n1. Try again\n2. Change nickname" << endl;
-							cin >> pass;
-							if (pass == "1") { continue; }
+							
+							if (_getch() == '1') { continue; }
 							else {
 								checkPass = true;
 							}
@@ -60,9 +65,9 @@ bool Game::LoginMenu(string nick, string pass) {
 			if (check == false) {
 				system("cls");
 				cout << "Here is no user with nickname: " << nick << "!" << endl;
-				cout << "1. Try again\n2. Back" << endl;
-				cin >> nick;
-				if (nick == "1") { continue; }
+				cout << "1. Try again\nElse Back" << endl;
+				
+				if (_getch() == '1') { continue; }
 				else {
 					return false;
 
@@ -111,6 +116,9 @@ bool Game::RegMenu(string nick, string pass) {
 	if (CheckGiftCode(GiftCode)) {
 		
 		cout << "Enter your nickname: "; cin >> nick;
+		for (int i = 0; i < user.size();i++) {
+			if(nick == user[i].GetNickName()){}
+		}
 		cout << "Enter your password: "; cin >> pass;
 		user.push_back(Player(nick, pass));
 		SaveUserToFile();
@@ -121,10 +129,46 @@ bool Game::RegMenu(string nick, string pass) {
 }
 int Game::MainMenuLegitUser() {
 	system("cls");
-	int choice;
-	cout << "1. Start the game\n2. Options\n3. Show Rules\n4. Check Highscores\n5. Change user\n0.Exit" << endl;
-	cin >> choice;
-	return choice;
+	int choice = 1, run, x = 1;
+	bool running = true;
+
+	Gotoxy(2, 0); cout << "Your menu items:";
+	Gotoxy(0, 1); cout << "->";
+
+	while (running)
+	{
+		Gotoxy(2, 1);  cout << "1. Start the game";
+		Gotoxy(2, 2);  cout << "2. Options";
+		Gotoxy(2, 3);  cout << "3. Show Rules";
+		Gotoxy(2, 4);  cout << "4. Check Highscores";
+		Gotoxy(2, 5);  cout << "5. Change user";
+		Gotoxy(2, 6);  cout << "0.Exit";
+
+		system("pause>nul"); // the >nul bit causes it the print no message
+
+		if (GetAsyncKeyState(VK_DOWN)) //down button pressed
+		{
+			Gotoxy(0, x); cout << "  ";
+			x < 6 ? x++ : x = 1;
+			Gotoxy(0, x); cout << "->";
+			choice < 5 ? choice++ : choice = 0;
+			continue;
+
+		}
+
+		if (GetAsyncKeyState(VK_UP)) //up button pressed
+		{
+			Gotoxy(0, x); cout << "  ";
+			x > 1 ? x-- : x = 6;
+			Gotoxy(0, x); cout << "->";
+			choice > 0 ? choice-- : choice = 5;
+			continue;
+		}
+
+		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+			return choice;
+		}
+	}
 }
 int Game::MainMenuPirateUser() {
 	system("cls");
@@ -136,6 +180,7 @@ int Game::MainMenuPirateUser() {
 void Game::GameStart() {
 	string nick;
 	string pass;
+	Matrix matrix;
 	bool exitGame = false;
 	bool back = false;
 	LoadUsersFromFile();
@@ -151,7 +196,10 @@ void Game::GameStart() {
 					switch (MainMenuLegitUser()) {
 					case 1:
 						system("cls");
-						cout << "Game Started" << endl;
+						
+						matrix.ShowBoard();
+						matrix.DrawShape(matrix.InitShape());
+
 						system("pause");
 						break;
 					case 2:
@@ -246,3 +294,5 @@ void Game::GameStart() {
 void Game::GameUserStart() {
 	GameStart();
 }
+
+
